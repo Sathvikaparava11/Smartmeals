@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Meal Planning</title>
+  <style>
+    /* === GLOBAL STYLES (Dusky Purple + White) === */
+    :root {
+      --primary: #5d4a7a;
+      --secondary: #7a6a8a;
+      --light: #f5f5f5;
+      --white: #ffffff;
+      --accent: #b399d4;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: var(--light);
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: var(--secondary);
+    }
+
+    /* === HEADER & NAV === */
+    header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* === HERO SECTION (Home Page) === */
+    .hero {
+      background: linear-gradient(rgba(93, 74, 122, 0.8), rgba(93, 74, 122, 0.9)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      text-align: center;
+      padding: 100px 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    /* === FEATURES SECTION (Home Page) === */
+    .features {
+      padding: 80px 0;
+      text-align: center;
+    }
+    .features h2 {
+      color: var(--primary);
+      margin-bottom: 40px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .feature-card {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .feature-card h3 {
+      color: var(--primary);
+      margin: 15px 0;
+    }
+
+    /* === ABOUT PAGE === */
+    .about {
+      padding: 80px 0;
+    }
+    .about h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .about-section {
+      margin-bottom: 40px;
+    }
+    .about-section h3 {
+      color: var(--secondary);
+      margin: 20px 0 10px;
+    }
+
+    /* === OUR MODEL PAGE === */
+    .model {
+      padding: 80px 0;
+      text-align: center;
+    }
+    .model h2 {
+      color: var(--primary);
+      margin-bottom: 40px;
+    }
+    .model p {
+      max-width: 800px;
+      margin: 0 auto 30px;
+    }
+
+    /* === CONTACT PAGE === */
+    .contact {
+      padding: 80px 0;
+    }
+    .contact h2 {
+      color: var(--primary);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .nutritionist-card {
+      background: var(--white);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .nutritionist-card h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .nutritionist-card p {
+      margin-bottom: 10px;
+    }
+    .contact-form {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .contact-form button {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .contact-form button:hover {
+      background: var(--secondary);
+    }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--primary);
+      color: var(--white);
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+
+    /* === PAGE TRANSITIONS (JS) === */
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">SMART MEALS</div>
+        <div class="nav-links">
+          <a href="#" onclick="showPage('home')">Home</a>
+          <a href="#" onclick="showPage('login')">Login</a>
+          <a href="#" onclick="showPage('register')">Register</a>
+          <a href="#" onclick="showPage('about')">About</a>
+          <a href="#" onclick="showPage('model')">Plan your Meal</a>
+          <a href="#" onclick="showPage('contact')">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HOME PAGE -->
+  <section id="home" class="page active">
+    <div class="hero">
+      <div class="container">
+        <h1>Smart Meal Planning Made Easy</h1>
+        <p>Personalized, nutritious, and effortless meal plans tailored just for you.</p>
+        <a href="#" class="btn" onclick="showPage('model')">How It Works</a>
+      </div>
+    </div>
+    <div class="features">
+      <div class="container">
+        <h2>Why Choose Us?</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Personalized Plans</h3>
+            <p>Custom meal plans based on your goals and preferences.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Nutrition Focused</h3>
+            <p>Balanced meals tailored to your dietary needs.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Time-Saving</h3>
+            <p>Automated grocery lists save you hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add to your nav-links -->
+
+<!-- Add these new sections -->
+<!-- LOGIN PAGE -->
+<section id="login" class="page">
+  <div class="container" style="max-width: 500px; margin: 50px auto;">
+    <div class="contact-form">
+      <h2 style="text-align: center;">Login</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p style="text-align: center; margin-top: 15px;">
+        Don't have an account? <a href="#" onclick="showPage('register')">Register here</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER PAGE -->
+<section id="register" class="page">
+  <div class="container" style="max-width: 500px; margin: 50px auto;">
+    <div class="contact-form">
+      <h2 style="text-align: center;">Register</h2>
+      <form id="registerForm">
+        <input type="text" id="registerName" placeholder="Full Name" required>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Password" required>
+        <button type="submit">Register</button>
+      </form>
+      <p style="text-align: center; margin-top: 15px;">
+        Already have an account? <a href="#" onclick="showPage('login')">Login here</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+  <!-- ABOUT PAGE -->
+  <section id="about" class="page">
+    <div class="about container">
+      <h2>About Us</h2>
+      <div class="about-section">
+        <p>Welcome to <strong>SmartMeals</strong>, where healthy eating meets smart technology. Our mission is to make meal planning effortless, personalized, and sustainable. Whether you're aiming for better health, managing dietary restrictions, or simply looking for delicious meal ideas, we've got you covered.</p>
+      </div>
+      <div class="about-section">
+        <h3>Why Choose Us?</h3>
+        <p><strong>Personalized Plans:</strong> Our smart algorithm customizes meal plans based on your health goals, preferences, and lifestyle.</p>
+        <p><strong>Nutrition Focused:</strong> Get the right balance of nutrients in every meal, tailored to your dietary needs.</p>
+        <p><strong>Time-Saving:</strong> Automated planning and grocery lists save you hours every week.</p>
+        <p><strong>Sustainable Choices:</strong> We prioritize fresh, seasonal ingredients to minimize waste and support local markets.</p>
+      </div>
+      <div class="about-section">
+        <h3>Our Story</h3>
+        <p>Founded in 2023, SmartMeals was born out of a passion for simplifying healthy eating. Our team of nutritionists and tech enthusiasts came together to create a solution that makes meal planning stress-free.</p>
+      </div>
+      <div class="about-section">
+        <h3>Our Vision</h3>
+        <p>To empower everyone to eat better, live healthier, and make meal planning a stress-free experience.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR MODEL PAGE -->
+  <section id="model" class="page">
+    <div class="model container">
+      <h2>Our Smart Meal Model</h2>
+      <p>Our proprietary algorithm analyzes your dietary preferences, health goals, and lifestyle to generate the perfect meal plan.</p>
+      <p>Key features:</p>
+      <ul style="text-align: left; max-width: 600px; margin: 0 auto 30px;">
+        <li>AI-powered meal suggestions</li>
+        <li>Dynamic grocery list generator</li>
+        <li>Nutritional breakdown per meal</li>
+      </ul>
+      <a href="#" class="btn" onclick="showPage('contact')">Get Started</a>
+    </div>
+  </section>
+
+  <!-- CONTACT PAGE -->
+  <section id="contact" class="page">
+    <div class="contact container">
+      <h2>Contact Our Nutritionists</h2>
+      <div class="contact-grid">
+        <div>
+          <div class="nutritionist-card">
+            <h3>Dr. Sarah Johnson</h3>
+            <p><strong>Specialty:</strong> Weight Management</p>
+            <p><strong>Email:</strong> sarah@smartmeals.com</p>
+          </div>
+          <div class="nutritionist-card" style="margin-top: 20px;">
+            <h3>Dr. Michael Chen</h3>
+            <p><strong>Specialty:</strong> Sports Nutrition</p>
+            <p><strong>Email:</strong> michael@smartmeals.com</p>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3>Send Us a Message</h3>
+          <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 SmartMeals. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS FOR PAGE SWITCHING -->
+  <script>
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      // Show selected page
+      document.getElementById(pageId).classList.add('active');
+    }
+    // Add to your existing script
+async function registerUser(name, email, password) {
+  try {
+    const response = await fetch('http://localhost:5000/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('Registration successful! Please login.');
+      showPage('login');
+    } else {
+      alert(data.message || 'Registration failed');
+    }
+  } catch (error) {
+    alert('An error occurred. Please try again.');
+  }
+}
+
+async function loginUser(email, password) {
+  try {
+    const response = await fetch('http://localhost:5000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Save token and user info
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);
+      localStorage.setItem('userName', data.name);
+      
+      alert(`Welcome back, ${data.name}!`);
+      showPage('home');
+      updateNavForLoggedInUser(data.name);
+    } else {
+      alert(data.message || 'Login failed');
+    }
+  } catch (error) {
+    alert('An error occurred. Please try again.');
+  }
+}
+
+function updateNavForLoggedInUser(name) {
+  const navLinks = document.querySelector('.nav-links');
+  navLinks.innerHTML = `
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('about')">About</a>
+    <a href="#" onclick="showPage('model')">Plan your Meal</a>
+    <a href="#" onclick="showPage('contact')">Contact</a>
+    <span style="color: var(--accent);">Hi, ${name}</span>
+    <a href="#" onclick="logout()">Logout</a>
+  `;
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('userName');
+  location.reload();
+}
+
+// Check if user is logged in on page load
+window.onload = function() {
+  const token = localStorage.getItem('token');
+  const userName = localStorage.getItem('userName');
+  
+  if (token && userName) {
+    updateNavForLoggedInUser(userName);
+  }
+};
+
+// Form event listeners
+document.getElementById('registerForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  registerUser(name, email, password);
+});
+
+document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  loginUser(email, password);
+});
+  </script>
+</body>
+</html>
